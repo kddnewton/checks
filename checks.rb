@@ -148,6 +148,7 @@ checks = [
   Check.new("Dependabot - bundler", ["ruby"]) { |client| (contents = client.contents_decoded(".github/dependabot.yml")) && YAML.load(contents)["updates"].any? { |update| update["package-ecosystem"] == "bundler" } },
   Check.new("Dependabot - GitHub Actions") { |client| (contents = client.contents_decoded(".github/dependabot.yml")) && YAML.load(contents)["updates"].any? { |update| update["package-ecosystem"] == "github-actions" } },
   Check.new("Dependabot - npm", ["javascript"]) { |client| (contents = client.contents_decoded(".github/dependabot.yml")) && YAML.load(contents)["updates"].any? { |update| update["package-ecosystem"] == "npm" } },
+  Check.new("Gemspec - files", ["gem"]) { |client| client.contents_decoded("#{client.repository.name}.gemspec")&.include?("spec.files = [") },
   Check.new("Gemspec - rubygems_mfa_required", ["gem"]) { |client| client.contents_decoded("#{client.repository.name}.gemspec")&.include?("rubygems_mfa_required") },
   Check.new("GitHub Actions") { |client| client.contents?(".github/workflows/main.yml") },
   Check.new("License") { |client| client.license? },
