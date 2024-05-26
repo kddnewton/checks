@@ -176,29 +176,30 @@ __END__
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=5">
     <title>kddnewton repositories</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
     <table>
       <thead>
         <tr>
-          <th>Repository</th>
+          <th></th>
           <%- checks.each do |check| -%>
-          <th><%= check.name %></th>
+          <th title="<%= check.name %>"><%= check.name %></th>
           <%- end -%>
         </tr>
       </thead>
       <tbody>
         <%- results.each do |result| -%>
         <tr>
-          <td><%= result.full_name %></td>
+          <td><a href="https://github.com/<%= result.full_name %>"><%= result.full_name %></a></td>
           <%- result.each(checks) do |status| -%>
           <%- case status -%>
           <%- when Check::SUCCESS -%>
-          <td>✓</td>
+          <td data-result="success">✓</td>
           <%- when Check::FAILURE -%>
-          <td>✗</td>
+          <td data-result="failure">✗</td>
           <%- when Check::NOT_APPLICABLE -%>
-          <td>-</td>
+          <td data-result="not-applicable">-</td>
           <%- end -%>
           <%- end -%>
         </tr>

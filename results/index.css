@@ -1,0 +1,42 @@
+:root {
+  font-family: "Courier New", monospace;
+}
+
+body {
+  margin: 0;
+  padding: 1em;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  border-bottom: 1px solid #000;
+  font-size: 0;
+}
+
+th::first-letter {
+  font-size: 1rem;
+}
+
+td {
+  border: 1px solid #ddd;
+  text-align: center;
+  width: 2em;
+}
+
+td:first-child {
+  padding: 0.2em 1em;
+  text-align: left;
+  white-space: nowrap;
+  width: auto;
+}
+
+td[data-result="success"] {
+  color: green;
+}
+
+td[data-result="failure"] {
+  color: red;
+}
