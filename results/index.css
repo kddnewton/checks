@@ -33,10 +33,6 @@ td:first-child {
   width: auto;
 }
 
-td[data-result="success"] {
-  color: green;
-}
-
 td[data-result="failure"] {
   color: red;
 }
