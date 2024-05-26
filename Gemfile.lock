@@ -11,6 +11,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.2)
     faraday-net_http (3.1.0)
       net-http
+    logger (1.6.0)
     net-http (0.4.1)
       uri
     octokit (8.1.0)
@@ -31,6 +32,7 @@ PLATFORMS
 DEPENDENCIES
   base64
   erb
+  logger
   octokit
   yaml
 

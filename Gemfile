@@ -4,5 +4,6 @@ source "https://rubygems.org"
 
 gem "base64"
 gem "erb"
+gem "logger"
 gem "octokit"
 gem "yaml"
