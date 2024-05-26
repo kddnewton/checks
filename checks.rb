@@ -3,6 +3,7 @@
 
 require "bundler/setup"
 require "erb"
+require "logger"
 require "octokit"
 require "yaml"
 
@@ -82,11 +83,12 @@ class Check
 end
 
 class Result
-  attr_reader :octokit, :repository
+  attr_reader :octokit, :repository, :logger
 
-  def initialize(octokit, repository)
+  def initialize(octokit, repository, logger)
     @octokit = octokit
     @repository = repository
+    @logger = logger
   end
 
   def full_name
@@ -97,6 +99,7 @@ class Result
     client = Client.new(octokit, repository)
 
     checks.each do |check|
+      logger.info("Checking #{full_name} - #{check.name}")
       yield check.call(client)
     end
   end
@@ -155,13 +158,16 @@ checks = [
   Check.new("Syntax Tree formatting", ["ruby"]) { |client| client.contents_decoded("Gemfile.lock").then { |content| !content || content.include?("syntax_tree") } }
 ]
 
-filter = ARGV.first
-repositories.select! { |repository| repo.full_name.include?(filter) } if filter
-
 octokit = Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
-results = repositories.map { |repository| Result.new(octokit, repository) }
+logger = Logger.new(STDOUT)
 
-puts ERB.new(DATA.read, trim_mode: "-").result_with_hash(checks: checks, results: results)
+filtered = repositories
+if ARGV.first == "--filter" && ARGV.shift && (filter = ARGV.shift)
+  filtered.select! { |repository| repository.full_name.include?(filter) }
+end
+
+results = filtered.map { |repository| Result.new(octokit, repository, logger) }
+File.write(ARGV.first, ERB.new(DATA.read, trim_mode: "-").result_with_hash(checks: checks, results: results))
 
 __END__
 <!doctype html>
